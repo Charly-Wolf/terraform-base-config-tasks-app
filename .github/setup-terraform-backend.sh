@@ -31,6 +31,7 @@ else
     --table-name "$DYNAMO_TABLE_NAME" \
     --attribute-definitions AttributeName=LockId,AttributeType=S \
     --key-schema AttributeName=LockId,KeyType=HASH \
+    --billing-mode PAY_PER_REQUEST \
     --region "$REGION"
 fi
 
