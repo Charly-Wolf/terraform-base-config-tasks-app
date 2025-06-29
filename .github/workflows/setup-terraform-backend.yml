@@ -19,4 +19,4 @@ jobs:
           aws-region: us-east-1
 
       - name: Run backend setup script
-        run: ../setup-terraform-backend.sh
+        run: ./.github/setup-terraform-backend.sh
