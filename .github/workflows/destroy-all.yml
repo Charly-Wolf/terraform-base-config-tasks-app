@@ -1,4 +1,4 @@
-name: Destroy All 
+name: Destroy All
 
 on:
   workflow_dispatch:
@@ -18,13 +18,13 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::146624863487:role/GitHub-Actions
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws-region: us-east-1
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.12.2  
+          terraform_version: 1.12.2
 
       - name: Terraform Init
         run: terraform init
