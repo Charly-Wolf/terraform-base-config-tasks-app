@@ -1,13 +1,16 @@
 resource "aws_s3_bucket" "tasks_frontend" {
   bucket = var.bucket_name
-  acl    = "private"
 
   tags = {
     Name = "Tasks Frontend Bucket"
   }
+}
 
-  website {
-    index_document = "index.html"
+resource "aws_s3_bucket_website_configuration" "tasks_frontend_website" {
+  bucket = aws_s3_bucket.tasks_frontend.id
+
+  index_document {
+    suffix = "index.html"
   }
 }
 
@@ -24,7 +27,7 @@ resource "aws_s3_bucket_acl" "tasks_frontend_bucket_acl" {
   bucket = aws_s3_bucket.tasks_frontend.id
   acl    = "public-read"
 
-  depends_on = [aws_s3_bucket_public_access_block.tasks_frontend]
+  depends_on = [aws_s3_bucket_public_access_block.tasks_frontend_public_access_block]
 }
 
 resource "aws_s3_bucket_policy" "tasks_frontend_policy" {
@@ -40,4 +43,12 @@ resource "aws_s3_bucket_policy" "tasks_frontend_policy" {
       }
     ]
   })
+}
+
+resource "aws_s3_bucket_versioning" "tasks_frontend_versioning" {
+  bucket = aws_s3_bucket.tasks_frontend.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
