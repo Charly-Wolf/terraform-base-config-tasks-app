@@ -47,4 +47,4 @@ jobs:
       - name: Destroy infrastructure
         run: |
           chmod +x ./.github/scripts/destroy.sh
-          .github/scripts/destroy.sh ${{ env.DESTROY_SCOPE }}
+          make destroy ${{ env.DESTROY_SCOPE }}
