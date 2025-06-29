@@ -1,0 +1,63 @@
+name: Destroy AWS Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: "What do you want to destroy?"
+        required: false
+        default: "all"
+        type: choice
+        options: [all, tasks, tf-backend]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: Charly-Wolf/my-github-actions/.github/actions/setup-aws@main
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.12.2
+
+      - name: Set DESTROY_SCOPE with fallback
+        run: |
+          DESTROY_SCOPE="${{ github.event.inputs.scope }}"
+          if [ -z "$DESTROY_SCOPE" ]; then
+            DESTROY_SCOPE="all"
+          fi
+          echo "DESTROY_SCOPE=$DESTROY_SCOPE" >> $GITHUB_ENV
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Destroy all infrastructure
+        if: env.DESTROY_SCOPE == 'all' 
+        run: |
+          chmod +x .github/scripts/destroy-all.sh
+          ./.github/scripts/destroy-all.sh
+
+      - name: Destroy Terraform Backend
+        if: env.DESTROY_SCOPE == 'tf-backend' 
+        run: |
+          chmod +x .github/scripts/destroy-terraform-backend.sh
+          ./.github/scripts/destroy-terraform-backend.sh
+
+      - name: Destroy tasks bucket
+        if: env.DESTROY_SCOPE == 'tasks' 
+        run: |
+          chmod +x .github/scripts/destroy-tasks-bucket.sh
+          ./.github/scripts/destroy-tasks-bucket.sh
