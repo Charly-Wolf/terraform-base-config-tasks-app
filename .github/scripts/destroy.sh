@@ -43,23 +43,23 @@ function destroy_tasks_bucket() {
   fi
 }
 
-
 function destroy_terraform_backend() {
   local BUCKET_NAME="cardp-terraform-state-bucket"
-  echo "🧹 Destroying Terraform backend bucket"
-
-  delete_bucket_versions_and_markers "$BUCKET_NAME"
-  echo "Deleting bucket $BUCKET_NAME..."
-  aws s3api delete-bucket --bucket "$BUCKET_NAME" --region "$REGION"
-
-  echo "Terraform backend destroyed."
+  if bucket_exists "$BUCKET_NAME"; then
+    echo "🧹 Destroying Terraform backend bucket"
+    delete_bucket_versions_and_markers "$BUCKET_NAME"
+    echo "Deleting bucket $BUCKET_NAME..."
+    aws s3api delete-bucket --bucket "$BUCKET_NAME" --region "$REGION"
+    echo "Terraform backend destroyed."
+  else
+    echo "Bucket $BUCKET_NAME does not exist. Skipping backend destruction."
+  fi
 }
 
 function destroy_all() {
   echo "Destroying Terraform-managed infrastructure..."
 
-  destroy_tasks_bucket_content
-  terraform destroy -auto-approve
+  destroy_tasks_bucket
   destroy_terraform_backend
 
   echo "✅ All destruction complete!"
