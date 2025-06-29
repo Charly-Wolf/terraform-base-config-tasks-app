@@ -22,7 +22,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Give execute permission to destroy script
-        run: chmod +x .github/scripts/destroy-backend.sh
+        run: chmod +x .github/scripts/destroy-terraform-backend.sh
 
       - name: Run destroy backend script
-        run: ./.github/scripts/destroy-backend.sh
+        run: ./.github/scripts/destroy-terraform-backend.sh
