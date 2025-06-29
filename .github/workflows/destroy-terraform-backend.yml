@@ -1,0 +1,28 @@
+name: Destroy Terraform Backend
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::146624863487:role/GitHub-Actions
+          aws-region: us-east-1
+
+      - name: Give execute permission to destroy script
+        run: chmod +x .github/scripts/destroy-backend.sh
+
+      - name: Run destroy backend script
+        run: ./.github/scripts/destroy-backend.sh

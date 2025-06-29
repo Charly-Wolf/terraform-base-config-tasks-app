@@ -1,0 +1,36 @@
+name: Destroy All Terraform Infrastructure
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  destroy-all:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::146624863487:role/GitHub-Actions
+          aws-region: us-east-1
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.12.2  
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Give execute permission to destroy-all script
+        run: chmod +x .github/scripts/destroy-all.sh
+
+      - name: Run destroy-all script
+        run: ./.github/scripts/destroy-all.sh
