@@ -11,10 +11,24 @@ permissions:
   contents: read
 
 jobs:
+  setup-terraform-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::146624863487:role/GitHub-Actions
+          aws-region: us-east-1
+      - name: Give execute permission
+        run: chmod +x ./.github/scripts/setup-terraform-backend.sh
+      - name: Run terraform backend setup
+        run: ./.github/scripts/setup-terraform-backend.sh
+
   terraform:
     name: Apply Terraform Infra
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout/@v4
