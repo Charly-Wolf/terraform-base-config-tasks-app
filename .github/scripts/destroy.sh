@@ -35,15 +35,11 @@ function destroy_tasks_bucket() {
 
 function destroy_terraform_backend() {
   local BUCKET_NAME="cardp-terraform-state-bucket"
-  local DYNAMO_TABLE_NAME="terraform-locks"
-  echo "🧹 Destroying Terraform backend bucket and DynamoDB table"
+  echo "🧹 Destroying Terraform backend bucket"
 
   delete_bucket_versions_and_markers "$BUCKET_NAME"
   echo "Deleting bucket $BUCKET_NAME..."
   aws s3api delete-bucket --bucket "$BUCKET_NAME" --region "$REGION"
-
-  echo "Deleting DynamoDB table $DYNAMO_TABLE_NAME..."
-  aws dynamodb delete-table --table-name "$DYNAMO_TABLE_NAME" --region "$REGION"
 
   echo "Terraform backend destroyed."
 }
