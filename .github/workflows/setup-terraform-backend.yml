@@ -17,6 +17,9 @@ jobs:
 
       - name: Configure AWS Credentials
         uses: Charly-Wolf/my-github-actions/.github/actions/setup-aws@main
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
 
       - name: Give execute permission to script
         run: chmod +x ./.github/scripts/setup-terraform-backend.sh
