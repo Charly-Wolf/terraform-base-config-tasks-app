@@ -18,5 +18,5 @@ setup-backend:
 
 .PHONY: destroy
 destroy:
-	bash .github/scripts/destroy.sh $(what-to-destroy)
+	bash .github/scripts/destroy.sh $(arg)
 	
