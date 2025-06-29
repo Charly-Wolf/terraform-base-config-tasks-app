@@ -12,9 +12,9 @@ plan:
 apply:
 	bash .github/scripts/apply.sh
 
-.PHONY: destroy
-destroy:
-	bash .github/scripts/destroy.sh
+.PHONY: destroy-tasks-bucket
+destroy-tasks-bucket:
+	bash .github/scripts/destroy-tasks-bucket.sh
 
 .PHONY: setup-backend
 setup-backend:

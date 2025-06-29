@@ -1,4 +1,4 @@
-name: Destroy infrastructure
+name: Destroy tasks bucket
 
 on:
   workflow_dispatch:
@@ -31,4 +31,4 @@ jobs:
         run: make init
 
       - name: Run Terraform destroy
-        run: make destroy
+        run: make destroy-tasks-bucket

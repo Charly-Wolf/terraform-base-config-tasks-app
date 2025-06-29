@@ -2,7 +2,7 @@
 set -e
 
 echo "Destroying Terraform-managed infrastructure..."
-terraform destroy -auto-approve
+terraform .github/scripts/destroy-tasks-bucket.sh
 
 echo "Terraform destroy done."
 bash .github/scripts/destroy-terraform-backend.sh
