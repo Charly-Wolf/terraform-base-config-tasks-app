@@ -44,20 +44,7 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Destroy all infrastructure
-        if: env.DESTROY_SCOPE == 'all' 
+      - name: Destroy infrastructure
         run: |
-          chmod +x .github/scripts/destroy-all.sh
-          ./.github/scripts/destroy-all.sh
-
-      - name: Destroy Terraform Backend
-        if: env.DESTROY_SCOPE == 'tf-backend' 
-        run: |
-          chmod +x .github/scripts/destroy-terraform-backend.sh
-          ./.github/scripts/destroy-terraform-backend.sh
-
-      - name: Destroy tasks bucket
-        if: env.DESTROY_SCOPE == 'tasks' 
-        run: |
-          chmod +x .github/scripts/destroy-tasks-bucket.sh
-          ./.github/scripts/destroy-tasks-bucket.sh
+          chmod +x ./.github/scripts/destroy.sh
+          .github/scripts/destroy.sh ${{ env.DESTROY_SCOPE }}
