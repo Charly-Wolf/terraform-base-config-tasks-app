@@ -46,10 +46,11 @@ function destroy_terraform_backend() {
 
 function destroy_all() {
   echo "Destroying Terraform-managed infrastructure..."
-  terraform destroy -auto-approve
 
   destroy_tasks_bucket
   destroy_terraform_backend
+
+  terraform destroy -auto-approve
 
   echo "✅ All destruction complete!"
 }
