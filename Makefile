@@ -12,19 +12,11 @@ plan:
 apply:
 	bash .github/scripts/apply.sh
 
-.PHONY: destroy-tasks-bucket
-destroy-tasks-bucket:
-	bash .github/scripts/destroy-tasks-bucket.sh
-
 .PHONY: setup-backend
 setup-backend:
 	bash .github/scripts/setup-terraform-backend.sh
 
-.PHONY: destroy-backend
-destroy-backend:
-	bash .github/scripts/destroy-terraform-backend.sh
-
-.PHONY: destroy-all
-destroy-all:
-	bash .github/scripts/destroy-all.sh
+.PHONY: destroy
+destroy:
+	bash .github/scripts/destroy.sh $(what-to-destroy)
 	

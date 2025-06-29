@@ -24,14 +24,25 @@ function delete_bucket_versions_and_markers() {
   done
 }
 
+function destroy_tasks_bucket_content() {
+  local BUCKET_NAME="cardp-tasks-frontend-bucket"
+  echo "🧹 Destroying tasks bucket content"
+  delete_bucket_versions_and_markers "$BUCKET_NAME"
+  echo "Tasks bucket content destroyed."
+}
+
 function destroy_tasks_bucket() {
   local BUCKET_NAME="cardp-tasks-frontend-bucket"
-  echo "🧹 Destroying tasks bucket: $BUCKET_NAME"
-  delete_bucket_versions_and_markers "$BUCKET_NAME"
-  echo "Deleting bucket $BUCKET_NAME..."
-  aws s3api delete-bucket --bucket "$BUCKET_NAME" --region "$REGION"
-  echo "Tasks bucket destroyed."
+  if bucket_exists "$BUCKET_NAME"; then
+    destroy_tasks_bucket_content
+    echo "🧹 Destroying bucket $BUCKET_NAME..."
+    aws s3api delete-bucket --bucket "$BUCKET_NAME" --region "$REGION"
+    echo "Tasks bucket destroyed."
+  else
+    echo "Bucket $BUCKET_NAME does not exist. Skipping."
+  fi
 }
+
 
 function destroy_terraform_backend() {
   local BUCKET_NAME="cardp-terraform-state-bucket"
@@ -47,12 +58,16 @@ function destroy_terraform_backend() {
 function destroy_all() {
   echo "Destroying Terraform-managed infrastructure..."
 
-  destroy_tasks_bucket
+  destroy_tasks_bucket_content
+  terraform destroy -auto-approve
   destroy_terraform_backend
 
-  terraform destroy -auto-approve
-
   echo "✅ All destruction complete!"
+}
+
+function bucket_exists() {
+  local BUCKET_NAME="$1"
+  aws s3api head-bucket --bucket "$BUCKET_NAME" --region "$REGION" 2>/dev/null
 }
 
 case "$1" in
@@ -66,6 +81,7 @@ case "$1" in
     destroy_terraform_backend
     ;;
   *)
+    echo "❌ Invalid argument: '$1'"
     echo "Usage: $0 {all|tasks|tf-backend}"
     exit 1
     ;;
