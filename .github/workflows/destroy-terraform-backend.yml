@@ -16,10 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws-region: us-east-1
+        uses: Charly-Wolf/my-github-actions/.github/actions/setup-aws@main
 
       - name: Give execute permission to destroy script
         run: chmod +x .github/scripts/destroy-terraform-backend.sh
