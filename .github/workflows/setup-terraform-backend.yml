@@ -18,5 +18,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
           aws-region: us-east-1
 
+      - name: Give execute permission to script
+        run: chmod +x ./.github/setup-terraform-backend.sh
+
       - name: Run backend setup script
         run: ./.github/setup-terraform-backend.sh
