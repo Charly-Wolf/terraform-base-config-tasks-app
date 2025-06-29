@@ -34,6 +34,8 @@ resource "aws_s3_bucket_versioning" "tasks_frontend_versioning" {
 resource "aws_s3_bucket_policy" "tasks_frontend_policy" {
   bucket = aws_s3_bucket.tasks_frontend.id
 
+  depends_on = [ aws_s3_bucket_public_access_block.tasks_frontend_public_access_block ]
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

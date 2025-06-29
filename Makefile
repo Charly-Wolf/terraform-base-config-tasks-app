@@ -27,3 +27,4 @@ destroy-backend:
 .PHONY: destroy-all
 destroy-all:
 	bash .github/scripts/destroy-all.sh
+	
