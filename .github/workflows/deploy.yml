@@ -28,6 +28,7 @@ jobs:
 
   terraform:
     name: Apply Terraform Infra
+    needs: setup-terraform-backend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -49,6 +50,6 @@ jobs:
 
       - name: Run Terraform plan
         run: make plan
-      
+
       - name: Run Terraform apply
         run: make apply
