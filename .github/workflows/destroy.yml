@@ -42,7 +42,7 @@ jobs:
           echo "DESTROY_SCOPE=$DESTROY_SCOPE" >> $GITHUB_ENV
 
       - name: Terraform Init
-        run: terraform init
+        run: make init
 
       - name: Destroy infrastructure
         run: |
