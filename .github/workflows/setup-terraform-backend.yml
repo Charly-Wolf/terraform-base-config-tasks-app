@@ -19,7 +19,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Give execute permission to script
-        run: chmod +x ./.github/setup-terraform-backend.sh
+        run: chmod +x ./.github/scripts/setup-terraform-backend.sh
 
       - name: Run backend setup script
-        run: ./.github/setup-terraform-backend.sh
+        run: ./.github/scripts/setup-terraform-backend.sh
