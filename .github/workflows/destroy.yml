@@ -24,5 +24,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
           aws-region: us-east-1
 
+      - name: Run Terraform init
+        run: make init
+
       - name: Run Terraform destroy
         run: make destroy
