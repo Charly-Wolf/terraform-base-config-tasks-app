@@ -8,7 +8,7 @@ init:
 plan:
 	bash .github/scripts/plan.sh
 
-.PHONY: aplly
+.PHONY: apply
 apply:
 	bash .github/scripts/apply.sh
 
