@@ -8,10 +8,6 @@ if [[ ! -f "$PLAN_FILE" ]]; then
   exit 1
 fi
 
-echo "Checking S3 bucket for public access configuration..."
-aws s3api put-public-access-block --bucket cardp-tasks-frontend-bucket --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=false,RestrictPublicBuckets=false
-
-
 echo "Applying Terraform plan..."
 terraform apply "$PLAN_FILE"
 
